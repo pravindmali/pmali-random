@@ -1,0 +1,20 @@
+---
+- name: Launhc job
+  hosts: localhost
+  tasks: 
+
+    - name: Launch a job
+      tower_job_launch:
+        #tower_host: 192.168.122.252
+        #tower_username: admin
+        #tower_password: admin
+        tower_config_file: ~/.tower_cli.cfg
+        credential: root
+        job_template: "launch"
+        inventory: "launch"
+      register: job
+    
+    #- name: Wait for job max 120s
+    #  tower_job_wait:
+    #    job_id: 8
+    #    timeout: 120
