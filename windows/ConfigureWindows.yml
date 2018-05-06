@@ -1,0 +1,45 @@
+---
+- name: Configure Windows server for ansible communication
+  hosts: windows
+  tasks:
+
+    - name: Get Default ExecutionPolicy 
+      win_command: powershell.exe Get-ExecutionPolicy
+      register: Get
+
+    - debug: var=Get
+
+    - name: Set Unrestricted 
+      win_command: powershell.exe Set-ExecutionPolicy unrestricted
+      register: Setunrestricted
+
+    - debug: var=Setunrestricted
+
+    - name: Get execution policy after modifying 
+      win_command: powershell.exe Get-ExecutionPolicy
+      register: ExecutionPolicy
+
+    - debug: var=ExecutionPolicy
+
+    - name: Download ConfigureRemotingForAnsible.ps1 file
+      win_get_url:
+        url: https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
+        dest: c:\Users\Administrator\Documents\ConfigureRemotingForAnsible.ps1
+      register: download
+
+    - debug: var=download
+
+      ######## If you dont have internet connection and file is locally stored, uncomment below task. 
+
+    #  win_copy:
+    #    src: /root/ansible/configure.ps1
+    #    dest: c:\Users\Administrator\Documents\
+    #  register: copy
+
+    #- debug: var=copy
+
+    - name: Execute configure.ps1
+      win_command: powershell.exe C:\Users\Administrator\Documents\ConfigureRemotingForAnsible.ps1
+      register: configure
+
+    - debug: var=configure
