@@ -1,5 +1,5 @@
 ---
-- name: Copy file from linux to windows
+- name: Configure Windows server for ansible communication
   hosts: windows
   tasks:
 
@@ -28,6 +28,8 @@
       register: download
 
     - debug: var=download
+
+      ######## If you dont have internet connection and file is locally stored, uncomment below task. 
 
     #  win_copy:
     #    src: /root/ansible/configure.ps1
