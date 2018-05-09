@@ -43,3 +43,10 @@
       register: configure
 
     - debug: var=configure
+
+    - name: Set Allowencrypted
+      win_command: powershell.exe winrm set winrm/config/service '@{AllowUnencrypted=\"true\"}'
+      register: allow
+
+    - debug: var=allow
+
