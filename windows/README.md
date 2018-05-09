@@ -1,6 +1,4 @@
 
-This Document is still in WIP
-
 1] If you are using `ConfigureWindows.yml` to configure newly created windows system,
    Make sure that your host/group vars should be as follows :
 
