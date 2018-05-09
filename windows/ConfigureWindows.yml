@@ -10,23 +10,13 @@
   hosts: windows
   tasks:
 
-    - name: Get Default ExecutionPolicy 
-      win_command: powershell.exe Get-ExecutionPolicy
-      register: Get
-
-    - debug: var=Get
-
-    - name: Set Unrestricted 
-      win_command: powershell.exe Set-ExecutionPolicy unrestricted
-      register: Setunrestricted
-
-    - debug: var=Setunrestricted
-
-    - name: Get execution policy after modifying 
-      win_command: powershell.exe Get-ExecutionPolicy
-      register: ExecutionPolicy
-
-    - debug: var=ExecutionPolicy
+    - name : Get and Set Execution policy
+      win_command: "{{ item }}"
+      with_items:
+        - powershell.exe Get-ExecutionPolicy
+        - powershell.exe Set-ExecutionPolicy unrestricted
+      register: config
+    - debug: var=config
 
     - name: Download ConfigureRemotingForAnsible.ps1 file
       win_get_url:
@@ -36,8 +26,6 @@
 
     - debug: var=download
 
-      ######## If you dont have internet connection and file is locally stored, uncomment below task. 
-
     #  win_copy:
     #    src: /root/ansible/configure.ps1
     #    dest: c:\Users\Administrator\Documents\
@@ -45,15 +33,12 @@
 
     #- debug: var=copy
 
-    - name: Execute configure.ps1
-      win_command: powershell.exe C:\Users\Administrator\Documents\ConfigureRemotingForAnsible.ps1
-      register: configure
 
-    - debug: var=configure
-
-    - name: Set Allowencrypted
-      win_command: powershell.exe winrm set winrm/config/service '@{AllowUnencrypted=\"true\"}'
+    - name: Execute confiure.ps1 and set allowencrypted to yes
+      win_command: "{{ item }}"
+      with_items:
+        - powershell.exe C:\Users\Administrator\Documents\ConfigureRemotingForAnsible.ps1
+        - powershell.exe winrm set winrm/config/service '@{AllowUnencrypted=\"true\"}'
       register: allow
-
     - debug: var=allow
 
