@@ -26,14 +26,6 @@
 
     - debug: var=download
 
-    #  win_copy:
-    #    src: /root/ansible/configure.ps1
-    #    dest: c:\Users\Administrator\Documents\
-    #  register: copy
-
-    #- debug: var=copy
-
-
     - name: Execute confiure.ps1 and set allowencrypted to yes
       win_command: "{{ item }}"
       with_items:
