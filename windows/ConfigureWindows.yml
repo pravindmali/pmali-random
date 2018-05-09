@@ -1,3 +1,10 @@
+# This is very Basic playbook to configure windows host. It will connect windows host on port 5985
+# with 'ntlm' winrm_transport. It will check for execution policy and will change it to Unrestricted.
+# After that it will download the .ps1 file and will configure windows for ansible connection. Once 
+# configuration is complete, it will set allowencrypted to true for basic authentication.
+#
+# Pravin Mali
+
 ---
 - name: Configure Windows server for ansible communication
   hosts: windows
